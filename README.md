@@ -5,7 +5,7 @@ TravelX is a web application that provides maps for camping spots. It is built u
 
 ## Description
 
-TravelX is designed to help outdoor enthusiasts find the perfect camping spots. The application uses interactive maps to display various camping locations, providing users with detailed information about each site.
+TravelX is designed to help outdoor enthusiasts find the perfect camping spots. The application uses interactive maps to display various camping locations, providing users with detailed information about each site. TravelX also works offline, making it convenient for users to access information even in remote areas.
 
 ## Features
 
