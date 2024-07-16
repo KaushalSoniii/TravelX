@@ -26,5 +26,5 @@ TravelX is designed to help outdoor enthusiasts find the perfect camping spots. 
 
 ## License
 
-This project is licensed under the MIT License. See the *LICENSE* file for more information..
+This project is licensed under the MIT License. See the *LICENSE* file for more information.
    
