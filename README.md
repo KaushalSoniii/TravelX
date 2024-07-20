@@ -16,7 +16,7 @@ TravelX is designed to help outdoor enthusiasts find the perfect camping spots. 
 
 ## Contributing
 
-- Contributions are welcome, Please fork the repository and open a pull request.
+- Contributions are welcome. Please fork the repository and open a pull request.
 
 1.Fork the Project <br>
 2.Create your Feature Branch ```git checkout -b feature/AmazingFeature``` <br>
