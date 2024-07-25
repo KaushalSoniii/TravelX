@@ -47,6 +47,29 @@ module.exports = {
       borderRadius: {
         '5xl': '40px',
       },
+      animation: {
+        'fade-in-out': 'fadeInOut 1s ease-in-out infinite',
+        'slide-up': 'slideUp 1s ease-in-out forwards',
+        'fade': 'fade 1s ease-in-out forwards',
+      },
+      keyframes: {
+        fadeInOut: {
+          '0%, 100%': { opacity: 1 },
+          '50%': { opacity: 0 },
+        },
+        slideUp: {
+          '0%': { transform: 'translateY(0)' },
+          '100%': { transform: 'translateY(-100%)' },
+        },
+        fade: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
+      },
+
+
+
+
     },
   },
   plugins: [],
