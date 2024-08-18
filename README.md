@@ -14,7 +14,7 @@ TravelX is designed to help outdoor enthusiasts find the perfect camping spots. 
 - Interactive maps to explore camping spots
 - Detailed information about each camping site
 - User-friendly interface
-- Built with React, Next.js, and TypeScript for a robust and scalable application
+- Built with React, Next.js,and TypeScript for a robust and scalable application
 
 ## Contributing
 
