@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampExplorer - Campsites</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        .campsite-card:hover {
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .image-carousel {
+            position: relative;
+            overflow: hidden;
+        }
+        .image-carousel img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .image-carousel img.active {
+            opacity: 1;
+        }
+        .thumbnail {
+            transition: all 0.3s ease-in-out;
+        }
+        .thumbnail:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-4">
+        <h1 class="text-3xl font-bold mb-6">Explore Our Campsites</h1>
+        <div id="campsiteList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Campsite cards will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <div id="campsiteDetail" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+        <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-3/4 lg:w-2/3 shadow-lg rounded-md bg-white">
+            <div id="detailContent">
+                <!-- Campsite details will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // This array will store all campsite data
+        let campsites = [
+            {
+                id: 1,
+                name: "Pine Valley Campground",
+                location: "Rocky Mountains, CO",
+                description: "Nestled in a serene pine forest with stunning mountain views.",
+                capacity: 50,
+                amenities: ["Hiking Trails", "Fishing", "Fire Pits"],
+                images: [
+                    "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                    "https://images.unsplash.com/photo-1517823382935-51bfcb0ec6bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                    "https://images.unsplash.com/photo-1510312305653-8ed496efae75?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1474&q=80"
+                ]
+            },
+            {
+                id: 2,
+                name: "Lakeside Retreat",
+                location: "Lake Tahoe, CA",
+                description: "Beautiful lakefront campsites with water activities.",
+                capacity: 30,
+                amenities: ["Boating", "Swimming", "Picnic Areas"],
+                images: [
+                    "https://images.unsplash.com/photo-1510312305653-8ed496efae75?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1474&q=80",
+                    "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                    "https://images.unsplash.com/photo-1517823382935-51bfcb0ec6bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                ]
+            },
+            {
+                id: 3,
+                name: "Desert Oasis",
+                location: "Joshua Tree, CA",
+                description: "Experience the magic of the desert under starry skies.",
+                capacity: 20,
+                amenities: ["Stargazing", "Rock Climbing", "Nature Walks"],
+                images: [
+                    "https://images.unsplash.com/photo-1517823382935-51bfcb0ec6bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+                    "https://images.unsplash.com/photo-1510312305653-8ed496efae75?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1474&q=80",
+                    "https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
+                ]
+            }
+        ];
+
+        // Function to render campsite cards
+        function renderCampsiteCards() {
+            const campsiteList = document.getElementById('campsiteList');
+            campsiteList.innerHTML = ''; // Clear existing content
+
+            campsites.forEach(campsite => {
+                const card = document.createElement('div');
+                card.className = 'campsite-card bg-white rounded-lg overflow-hidden shadow-md transition-shadow duration-300';
+                card.innerHTML = `
+                    <div class="image-carousel h-48 relative">
+                        ${campsite.images.map((img, index) => `
+                            <img src="${img}" alt="${campsite.name} - Image ${index + 1}" class="w-full h-full object-cover absolute top-0 left-0 ${index === 0 ? 'active' : ''}" style="opacity: ${index === 0 ? 1 : 0};">
+                        `).join('')}
+                    </div>
+                    <div class="p-4">
+                        <h2 class="font-bold text-xl mb-2">${campsite.name}</h2>
+                        <p class="text-gray-700 text-base mb-2"><i class="fas fa-map-marker-alt mr-2"></i>${campsite.location}</p>
+                        <p class="text-gray-600 text-sm mb-4">${campsite.description}</p>
+                        <p class="text-gray-600 text-sm"><i class="fas fa-users mr-2"></i>Capacity: ${campsite.capacity} campers</p>
+                    </div>
+                    <div class="px-4 py-2 bg-gray-100">
+                        <button class="view-details w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300" data-id="${campsite.id}">View Details</button>
+                    </div>
+                `;
+                campsiteList.appendChild(card);
+
+                // Add hover effect for image carousel
+                const carousel = card.querySelector('.image-carousel');
+                let currentIndex = 0;
+                card.addEventListener('mouseenter', () => {
+                    const interval = setInterval(() => {
+                        const images = carousel.querySelectorAll('img');
+                        images[currentIndex].style.opacity = 0;
+                        currentIndex = (currentIndex + 1) % images.length;
+                        images[currentIndex].style.opacity = 1;
+                    }, 1500); // Change image every 1.5 seconds
+                    card.addEventListener('mouseleave', () => clearInterval(interval));
+                });
+            });
+
+            // Add event listeners to the "View Details" buttons
+            document.querySelectorAll('.view-details').forEach(button => {
+                button.addEventListener('click', (e) => showCampsiteDetail(e.target.dataset.id));
+            });
+        }
+
+        // Function to show campsite detail
+        function showCampsiteDetail(campsiteId) {
+            const campsite = campsites.find(c => c.id == campsiteId);
+            const detailContent = document.getElementById('detailContent');
+            detailContent.innerHTML = `
+                <div class="flex justify-between items-start mb-4">
+                    <h2 class="text-2xl font-bold">${campsite.name}</h2>
+                    <button id="closeDetail" class="text-gray-500 hover:text-gray-700">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="mb-4">
+                    <img id="fullSizeImage" src="${campsite.images[0]}" alt="${campsite.name}" class="w-full h-64 object-cover rounded-lg mb-2">
+                    <div class="flex overflow-x-auto space-x-2 pb-2">
+                        ${campsite.images.map((img, index) => `
+                            <img src="${img}" alt="${campsite.name} - Thumbnail ${index + 1}" class="thumbnail w-20 h-20 object-cover rounded cursor-pointer ${index === 0 ? 'ring-2 ring-green-500' : ''}" data-index="${index}">
+                        `).join('')}
+                    </div>
+                </div>
+                <p class="text-gray-700 mb-2"><i class="fas fa-map-marker-alt mr-2"></i>${campsite.location}</p>
+                <p class="text-gray-600 mb-4">${campsite.description}</p>
+                <p class="text-gray-600 mb-4"><i class="fas fa-users mr-2"></i>Capacity: ${campsite.capacity} campers</p>
+                <div class="mb-4">
+                    <h3 class="font-semibold mb-2">Amenities:</h3>
+                    <div class="flex flex-wrap gap-2">
+                        ${campsite.amenities.map(amenity => `<span class="bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700">${amenity}</span>`).join('')}
+                    </div>
+                </div>
+                <button class="w-full bg-green-500 text-white py-2 px-4 rounded hover:bg-green-600 transition duration-300">Book Now</button>
+            `;
+            document.getElementById('campsiteDetail').classList.remove('hidden');
+
+            // Add event listener to close button
+            document.getElementById('closeDetail').addEventListener('click', () => {
+                document.getElementById('campsiteDetail').classList.add('hidden');
+            });
+
+            // Add event listeners to thumbnails
+            detailContent.querySelectorAll('.thumbnail').forEach(thumb => {
+                thumb.addEventListener('click', (e) => {
+                    const index = e.target.dataset.index;
+                    document.getElementById('fullSizeImage').src = campsite.images[index];
+                    detailContent.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('ring-2', 'ring-green-500'));
+                    e.target.classList.add('ring-2', 'ring-green-500');
+                });
+            });
+        }
+
+        // Function to add a new campsite (to be called from admin panel)
+        function addCampsite(newCampsite) {
+            campsites.push(newCampsite);
+            renderCampsiteCards(); // Re-render the campsite list
+        }
+
+        // Initial render
+        renderCampsiteCards();
+
+        // Example of how to add a new campsite (this would typically be done through an admin panel)
+        // Uncomment this to test adding a new campsite
+        /*
+        setTimeout(() => {
+            addCampsite({
+                id: 4,
+                name: "Mountain View Camp",
+                location: "Yosemite, CA",
+                description: "Spectacular views of Yosemite's iconic peaks.",
+                capacity: 40,
+                amenities: ["Hiking", "Rock Climbing", "Wildlife Viewing"],
+                images: [
+                    "https://images.unsplash.com/photo-1533873984035-25970ab07461?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1474&q=80",
+                    
+                    "https://images.unsplash.com/photo-1496545672447-f699b503d270?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80",
+                    "https://images.unsplash.com/photo-1571863533956-01c88e79957e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80"
+                ]
+            });
+        }, 5000); // Adds a new campsite after 5 seconds
+        */
+    </script>
+</body>
+</html>
