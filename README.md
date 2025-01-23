@@ -2,7 +2,7 @@
 
 TravelX is a web application that provides maps for camping spots. It is built using React, Next.js, and TypeScript.
 
-Live Link - https://travel-x-ochre.vercel.app/
+Live Link- https://travel-x-ochre.vercel.app/
 
 
 ## Description
